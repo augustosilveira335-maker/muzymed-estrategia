@@ -84,7 +84,8 @@ section.papel{background:var(--papel)}
 .local{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--linha)}
 .local:first-of-type{border-top:0;padding-top:0}
 .pino{flex:0 0 40px;height:40px;border-radius:50%;border:1.5px dashed var(--gold);display:grid;place-items:center;position:relative}
-.pino::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--navy);box-shadow:0 0 0 4px var(--gold-claro)}
+.local span.pino{display:grid;place-items:center}
+.pino::after{content:"";display:block;width:10px;height:10px;border-radius:50%;background:var(--navy);box-shadow:0 0 0 4px var(--gold-claro)}
 .local b{display:block;color:var(--navy);font-size:16px;line-height:1.35}
 .local span{display:block;font-size:14.5px;color:var(--cinza)}
 .local a{color:var(--azul);font-size:13.5px;font-weight:600}
@@ -135,6 +136,8 @@ ul.lista b{color:var(--navy)}
 .fase2 .dia-topo h3 small{color:#9BA6C4}
 .fase2 p{margin-top:10px;font-size:15.5px}
 .fase2 b{color:var(--off)}
+.valor-dia{font-size:13px;font-weight:800;color:#8A6A2E;background:#F3E9D4;padding:4px 10px;border-radius:99px;white-space:nowrap}
+.dia-topo h3{flex:1 1 auto}
 .selo.opc{background:var(--gold);color:var(--navy)}
 .verba{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:baseline;margin-top:18px;padding:18px 22px;border:1px solid var(--linha);border-radius:var(--raio);background:var(--branco)}
 .verba b{font-family:'Archivo',sans-serif;font-stretch:125%;font-variation-settings:"wdth" 125;font-size:30px;color:var(--navy)}
@@ -249,8 +252,8 @@ footer img{width:120px;opacity:.85}
       <span class="chip">Tudo pelo WhatsApp</span>
     </div>
     <div class="numeros">
-      <div><b>R$ <span class="num">320</span></b><span>verba total dos 4 dias de congresso</span></div>
-      <div><b><span class="num">2</span> locais</b><span>raio de 1 km no centro de convenções e no hotel oficial</span></div>
+      <div><b>R$ <span class="num">600</span></b><span>R$ 480 nos 4 dias de congresso e R$ 120 no lembrete até 30/09</span></div>
+      <div><b><span class="num">2</span> locais</b><span>raio de 3 km em volta do centro de convenções e do hotel oficial</span></div>
       <div><b><span class="num">6</span> anúncios</b><span>3 prontos e 3 com arte final em produção</span></div>
       <div><b><span class="num">30</span>/09</b><span>último dia para o pedido com o desconto</span></div>
     </div>
@@ -319,7 +322,7 @@ footer img{width:120px;opacity:.85}
           <span class="pino"></span>
           <div>
             <b>Centro de Convenções Salvador</b>
-            <span>Av. Octávio Mangabeira, 5.490 · Boca do Rio · raio de 1 km</span>
+            <span>Av. Octávio Mangabeira, 5.490 · Boca do Rio · raio de 3 km</span>
             <a href="https://www.google.com/maps/search/?api=1&query=Centro+de+Conven%C3%A7%C3%B5es+Salvador" target="_blank" rel="noopener">Ver no mapa</a>
           </div>
         </div>
@@ -327,10 +330,11 @@ footer img{width:120px;opacity:.85}
           <span class="pino"></span>
           <div>
             <b>Hotel Deville Prime Salvador</b>
-            <span>Hotel oficial do congresso · Itapuã · raio de 1 km</span>
+            <span>Hotel oficial do congresso · Itapuã · raio de 3 km</span>
             <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Deville+Prime+Salvador" target="_blank" rel="noopener">Ver no mapa</a>
           </div>
         </div>
+        <p class="regra"><b>Por que 3 km:</b> o raio cobre também os hotéis e restaurantes da orla perto do evento, e não só o prédio. O público maior ajuda o Meta a entregar o anúncio desde o primeiro dia.</p>
         <p class="regra">Regra do Meta: o anúncio aparece para quem <b>mora ou esteve recentemente</b> nesses locais. Hoje não existe mais a opção de mostrar só para visitantes.</p>
       </div>
       <div class="cartao">
@@ -350,7 +354,7 @@ footer img{width:120px;opacity:.85}
           <span class="tag">Cirurgia</span>
           <span class="tag">Estética</span>
         </div>
-        <p class="explica">Usamos os interesses como pista para o Meta começar a entrega, sem travar o público. Num raio de 1 km, travar por interesse deixaria o público pequeno demais para o anúncio rodar. E o Meta não permite mais segmentar por temas de saúde. Quem filtra de verdade é o local e o crachá.</p>
+        <p class="explica">Usamos os interesses como pista para o Meta começar a entrega, sem travar o público. Nesses raios, travar por interesse deixaria o público pequeno demais para o anúncio rodar. E o Meta não permite mais segmentar por temas de saúde. Quem filtra de verdade é o local e o crachá.</p>
       </div>
       <div class="cartao">
         <h3>Comportamentos</h3>
@@ -379,7 +383,7 @@ footer img{width:120px;opacity:.85}
     </div>
 
     <article class="dia">
-      <div class="dia-topo"><h3>Quarta, 16/09 <small>pré-evento</small></h3><span class="selo">Subimos hoje</span></div>
+      <div class="dia-topo"><h3>Quarta, 16/09 <small>pré-evento</small></h3><span class="valor-dia">cerca de R$ 75</span><span class="selo">Subimos hoje</span></div>
       <div class="linha-tempo" aria-hidden="true">
         <span class="rot">Congresso</span><div class="faixa">
           <div class="bloco cong" style="left:13.889%;width:25%"></div>
@@ -405,7 +409,7 @@ footer img{width:120px;opacity:.85}
     </article>
 
     <article class="dia">
-      <div class="dia-topo"><h3>Quinta, 17/09 <small>dia 1</small></h3></div>
+      <div class="dia-topo"><h3>Quinta, 17/09 <small>dia 1</small></h3><span class="valor-dia">cerca de R$ 135</span></div>
       <div class="linha-tempo" aria-hidden="true">
         <span class="rot">Congresso</span><div class="faixa">
           <div class="bloco cong" style="left:8.333%;width:30.556%"></div>
@@ -436,7 +440,7 @@ footer img{width:120px;opacity:.85}
     </article>
 
     <article class="dia">
-      <div class="dia-topo"><h3>Sexta, 18/09 <small>dia 2</small></h3></div>
+      <div class="dia-topo"><h3>Sexta, 18/09 <small>dia 2</small></h3><span class="valor-dia">cerca de R$ 125</span></div>
       <div class="linha-tempo" aria-hidden="true">
         <span class="rot">Congresso</span><div class="faixa">
           <div class="bloco cong" style="left:16.667%;width:22.222%"></div>
@@ -467,7 +471,7 @@ footer img{width:120px;opacity:.85}
     </article>
 
     <article class="dia">
-      <div class="dia-topo"><h3>Sábado, 19/09 <small>dia 3</small></h3><span class="selo">Último dia do crachá</span></div>
+      <div class="dia-topo"><h3>Sábado, 19/09 <small>dia 3</small></h3><span class="valor-dia">cerca de R$ 145</span><span class="selo">Último dia do crachá</span></div>
       <div class="linha-tempo" aria-hidden="true">
         <span class="rot">Congresso</span><div class="faixa">
           <div class="bloco cong" style="left:5.556%;width:33.333%"></div>
@@ -497,13 +501,13 @@ footer img{width:120px;opacity:.85}
     </article>
 
     <div class="verba">
-      <b>R$ 320</b>
-      <span>no total dos 4 dias. O Meta distribui a verba entre esses horários e não gasta nada fora deles.</span>
+      <b>R$ 480</b>
+      <span>nos 4 dias de congresso. O Meta distribui a verba entre esses horários e não gasta nada fora deles. O valor de cada dia é uma estimativa pelo número de horas no ar.</span>
     </div>
 
     <div class="fase2">
-      <div class="dia-topo"><h3>20 a 30/09 <small>depois do congresso</small></h3><span class="selo opc">Opcional</span></div>
-      <p><b>Lembrete do prazo.</b> Quem mandou mensagem ou interagiu com os anúncios vê o aviso de que o desconto do crachá vale até 30/09. Proposta de <b>R$ 15 por dia (R$ 165 no total)</b>. Se a lista ficar pequena demais para o Meta rodar, avisamos e não gastamos.</p>
+      <div class="dia-topo"><h3>20 a 30/09 <small>depois do congresso</small></h3><span class="selo opc">R$ 120</span></div>
+      <p><b>Lembrete do prazo.</b> Quem mandou mensagem ou interagiu com os anúncios vê o aviso de que o desconto do crachá vale até 30/09. São <b>R$ 120 no total, cerca de R$ 11 por dia</b>. É essa fase que transforma crachá recebido em pedido antes do prazo. Se a lista ficar pequena demais para o Meta rodar, avisamos e não gastamos.</p>
     </div>
   </div>
 </section>
@@ -692,7 +696,7 @@ Estamos no WhatsApp durante todo o congresso.</div></div>
         <div class="perg"><span>Frete grátis para todo o Brasil?</span><span>Vale para todo o catálogo?</span><span>Crachá de expositor também vale?</span><span>Um pedido por crachá?</span></div></div></li>
       <li><div><b>Quem responde o WhatsApp de 16 a 19/09</b><p>Nome de quem atende e se alguém cobre a noite e o sábado.</p></div></li>
       <li><div><b>Dois serviços citados nos anúncios</b><p>Manutenção de peças de outras marcas (anúncio 5) e gravação com o nome da clínica (anúncio 6).</p></div></li>
-      <li><div><b>A verba</b><p>R$ 320 nos 4 dias de congresso. Se quiser o lembrete depois do congresso, mais R$ 165 de 20 a 30/09.</p></div></li>
+      <li><div><b>A verba</b><p>R$ 600 no total: R$ 480 nos 4 dias de congresso e R$ 120 no lembrete de 20 a 30/09.</p></div></li>
     </ol>
   </div>
 </section>
