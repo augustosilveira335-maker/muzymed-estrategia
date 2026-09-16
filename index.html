@@ -10,6 +10,7 @@
 <meta name="description" content="Muzymed · como vão ser os anúncios do congresso de cirurgia plástica em Salvador: quem vê, quando, em que horários e o que precisamos aprovar.">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
@@ -101,6 +102,31 @@ ul.lista{list-style:none;display:grid;gap:12px}
 ul.lista li{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:15.5px;color:#444}
 ul.lista li::before{content:"";width:8px;height:8px;margin:8px 0 0 6px;border-radius:2px;background:var(--gold);transform:rotate(45deg)}
 ul.lista b{color:var(--navy)}
+
+
+/* mapa */
+.mapa-bloco{display:grid;gap:14px;margin-bottom:14px}
+@media(min-width:900px){.mapa-bloco{grid-template-columns:1fr 320px}}
+.mapa-wrap{position:relative;background:var(--branco);border:1px solid var(--linha);border-radius:var(--raio);overflow:hidden}
+#mapa{height:500px;width:100%;background:#E9E6DF}
+@media(min-width:900px){#mapa{height:520px}}
+#mapa .leaflet-tile-pane{filter:grayscale(.55) contrast(.95) brightness(1.03)}
+.leaflet-container{font-family:'Manrope',system-ui,sans-serif}
+.pin{display:grid;place-items:center;width:34px;height:34px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--navy);border:3px solid var(--gold);box-shadow:0 6px 14px rgba(8,19,49,.35)}
+.pin b{transform:rotate(45deg);color:var(--off);font-size:14px;font-weight:800}
+.rotulo-mapa{background:var(--navy);color:var(--off);border:0;border-radius:8px;padding:6px 10px;font-size:12.5px;font-weight:700;box-shadow:0 6px 16px rgba(8,19,49,.3);white-space:nowrap}
+.rotulo-mapa::before{display:none}
+.rotulo-dist{background:var(--gold);color:var(--navy)}
+.distancias{display:grid;gap:12px;align-content:start}
+.dist{background:var(--branco);border:1px solid var(--linha);border-radius:var(--raio);padding:16px 18px}
+.dist small{display:block;font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--azul)}
+.dist b{display:block;font-family:'Archivo',sans-serif;font-stretch:125%;font-variation-settings:"wdth" 125;font-size:26px;font-weight:700;color:var(--navy);line-height:1.15;margin-top:6px}
+.dist span{display:block;font-size:14px;color:#555;margin-top:4px}
+.dist .n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--off);font-size:11px;font-weight:800;margin-right:6px;vertical-align:1px}
+.legenda-mapa{display:flex;flex-wrap:wrap;gap:14px;padding:10px 14px;border-top:1px solid var(--linha);font-size:13px;color:#555}
+.legenda-mapa i{display:inline-block;vertical-align:middle;margin-right:6px}
+.legenda-mapa .c{width:14px;height:14px;border-radius:50%;border:2px solid var(--gold);background:rgba(8,19,49,.12)}
+.legenda-mapa .r{width:22px;border-top:3px dashed var(--navy)}
 
 /* 03 agenda */
 .legenda{display:flex;flex-wrap:wrap;gap:16px;font-size:13.5px;color:#505050;margin-bottom:18px}
@@ -314,6 +340,18 @@ footer img{width:120px;opacity:.85}
       <p class="eyebrow"><span class="num">02</span> · Segmentação</p>
       <h2 class="arc">Quem vai <em>ver os anúncios.</em></h2>
       <p>O filtro principal é o lugar. Quem está no congresso passa o dia no centro de convenções e dorme no hotel oficial.</p>
+    </div>
+    <div class="mapa-bloco">
+      <div class="mapa-wrap">
+        <div id="mapa" role="img" aria-label="Mapa de Salvador com o Centro de Convenções, o Hotel Deville Prime e o raio de 3 km de cada um"></div>
+        <div class="legenda-mapa"><span><i class="c"></i>Raio de 3 km onde o anúncio aparece</span><span><i class="r"></i>Caminho de carro entre os dois</span></div>
+      </div>
+      <div class="distancias">
+        <div class="dist"><small>Entre os dois pontos</small><b>9,7 km</b><span>em linha reta</span></div>
+        <div class="dist"><small>De carro</small><b>10,9 km · 16 min</b><span>tempo estimado sem trânsito</span></div>
+        <div class="dist"><small>Raio de cada ponto</small><b>3 km</b><span><span class="n">1</span>Centro de Convenções, na Boca do Rio<br><span class="n">2</span>Hotel Deville Prime, em Itapuã</span></div>
+        <div class="dist"><small>Entre os dois círculos</small><b>3,7 km</b><span>de folga entre as bordas: as duas áreas não se sobrepõem</span></div>
+      </div>
     </div>
     <div class="grade duas">
       <div class="cartao">
@@ -684,6 +722,27 @@ Estamos no WhatsApp durante todo o congresso.</div></div>
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function () {
+  if (!window.L || !document.getElementById('mapa')) return;
+  var CC = [-12.98414, -38.43308], HOTEL = [-12.94990, -38.35107];
+  var ROTA = [[-12.98383,-38.43347],[-12.9838,-38.43344],[-12.98359,-38.4332],[-12.98337,-38.43293],[-12.98332,-38.43285],[-12.98327,-38.43276],[-12.98313,-38.43278],[-12.98302,-38.4328],[-12.98288,-38.43272],[-12.98282,-38.43269],[-12.98265,-38.43263],[-12.98258,-38.43258],[-12.98253,-38.43253],[-12.98243,-38.43241],[-12.98238,-38.43234],[-12.98233,-38.43227],[-12.98227,-38.43214],[-12.98221,-38.43199],[-12.98215,-38.43187],[-12.98212,-38.43179],[-12.98153,-38.4312],[-12.98141,-38.43114],[-12.98134,-38.43105],[-12.98128,-38.43097],[-12.98117,-38.43084],[-12.98108,-38.43075],[-12.98094,-38.43065],[-12.98078,-38.43054],[-12.98053,-38.43037],[-12.98024,-38.43014],[-12.98005,-38.4299],[-12.97984,-38.42963],[-12.97947,-38.42916],[-12.97936,-38.42899],[-12.9793,-38.42889],[-12.97925,-38.42879],[-12.97921,-38.42866],[-12.97918,-38.42854],[-12.97917,-38.42841],[-12.97917,-38.42826],[-12.9792,-38.42714],[-12.97921,-38.42683],[-12.97922,-38.42652],[-12.97922,-38.4264],[-12.97921,-38.42629],[-12.97919,-38.42617],[-12.97916,-38.42602],[-12.97911,-38.4259],[-12.97907,-38.42578],[-12.97901,-38.42567],[-12.9789,-38.4255],[-12.97878,-38.42532],[-12.97871,-38.42523],[-12.97857,-38.42506],[-12.97769,-38.42394],[-12.97707,-38.42314],[-12.97689,-38.42291],[-12.97675,-38.42272],[-12.9766,-38.42251],[-12.97648,-38.42231],[-12.97637,-38.42209],[-12.97628,-38.42188],[-12.97618,-38.42164],[-12.97613,-38.42149],[-12.97602,-38.42111],[-12.97596,-38.42091],[-12.97594,-38.42084],[-12.9757,-38.42006],[-12.97564,-38.41983],[-12.97547,-38.41932],[-12.97543,-38.41916],[-12.97533,-38.41886],[-12.97532,-38.41882],[-12.97524,-38.41856],[-12.97518,-38.41843],[-12.97516,-38.41841],[-12.97512,-38.41837],[-12.97469,-38.41804],[-12.97453,-38.41786],[-12.97443,-38.41772],[-12.97433,-38.41753],[-12.97423,-38.41735],[-12.97406,-38.41707],[-12.97404,-38.41703],[-12.97385,-38.41675],[-12.97355,-38.41633],[-12.97342,-38.41614],[-12.97338,-38.41607],[-12.97304,-38.41556],[-12.97277,-38.41514],[-12.97247,-38.41469],[-12.97234,-38.41449],[-12.97225,-38.41436],[-12.97184,-38.41372],[-12.97175,-38.41359],[-12.97148,-38.41319],[-12.97116,-38.41269],[-12.97103,-38.4125],[-12.97092,-38.41232],[-12.97081,-38.41216],[-12.9707,-38.41201],[-12.97038,-38.41151],[-12.97028,-38.41136],[-12.97023,-38.41127],[-12.9698,-38.41054],[-12.96964,-38.41026],[-12.96935,-38.4097],[-12.96919,-38.40946],[-12.96881,-38.40882],[-12.96875,-38.40872],[-12.96831,-38.40794],[-12.96804,-38.4075],[-12.96715,-38.40644],[-12.96701,-38.40627],[-12.96686,-38.4061],[-12.96653,-38.40568],[-12.96637,-38.4055],[-12.96627,-38.40537],[-12.9662,-38.40528],[-12.9661,-38.40515],[-12.96599,-38.40499],[-12.96592,-38.40487],[-12.96587,-38.40473],[-12.96585,-38.40464],[-12.96576,-38.40441],[-12.9657,-38.40427],[-12.96569,-38.4042],[-12.96567,-38.40418],[-12.96558,-38.40388],[-12.96557,-38.40382],[-12.96551,-38.40361],[-12.96547,-38.40356],[-12.96538,-38.4034],[-12.96526,-38.40318],[-12.96523,-38.4031],[-12.96506,-38.40277],[-12.96464,-38.40228],[-12.96432,-38.40203],[-12.96416,-38.40194],[-12.96411,-38.40191],[-12.96403,-38.40187],[-12.96384,-38.40172],[-12.96379,-38.40167],[-12.96365,-38.40156],[-12.96353,-38.40143],[-12.96312,-38.40101],[-12.96301,-38.40087],[-12.9629,-38.40074],[-12.96276,-38.40053],[-12.96258,-38.40025],[-12.96242,-38.4],[-12.96234,-38.39986],[-12.96226,-38.3997],[-12.96215,-38.39948],[-12.96206,-38.39925],[-12.96178,-38.39853],[-12.96171,-38.39833],[-12.96161,-38.39807],[-12.96152,-38.39784],[-12.96142,-38.3976],[-12.9613,-38.39735],[-12.96115,-38.39705],[-12.9609,-38.39658],[-12.96076,-38.3963],[-12.96062,-38.39605],[-12.95985,-38.39459],[-12.95945,-38.39383],[-12.95906,-38.39307],[-12.95886,-38.39268],[-12.95876,-38.39251],[-12.95858,-38.3922],[-12.95831,-38.39177],[-12.95805,-38.39137],[-12.95781,-38.39099],[-12.95772,-38.39084],[-12.95757,-38.39057],[-12.95738,-38.39019],[-12.95721,-38.38984],[-12.95706,-38.38953],[-12.9569,-38.38921],[-12.95674,-38.38886],[-12.95599,-38.38728],[-12.95583,-38.38696],[-12.95568,-38.38665],[-12.95557,-38.38643],[-12.95548,-38.38621],[-12.95528,-38.38567],[-12.95506,-38.38507],[-12.9549,-38.38463],[-12.9546,-38.38382],[-12.95455,-38.38366],[-12.95451,-38.38354],[-12.95441,-38.38324],[-12.95434,-38.38301],[-12.95427,-38.38277],[-12.95412,-38.38218],[-12.9539,-38.38134],[-12.95372,-38.38067],[-12.95352,-38.37998],[-12.95346,-38.37977],[-12.95342,-38.37961],[-12.95314,-38.37866],[-12.95306,-38.37841],[-12.95305,-38.37837],[-12.95284,-38.3777],[-12.95283,-38.37768],[-12.95282,-38.37767],[-12.95277,-38.3776],[-12.95274,-38.37753],[-12.95273,-38.37748],[-12.95271,-38.37743],[-12.95261,-38.37714],[-12.95249,-38.37673],[-12.95229,-38.37599],[-12.95206,-38.3752],[-12.95189,-38.37456],[-12.95186,-38.37447],[-12.95166,-38.37377],[-12.95144,-38.37299],[-12.95121,-38.37218],[-12.95107,-38.37167],[-12.95086,-38.37096],[-12.95083,-38.37085],[-12.95062,-38.37006],[-12.9505,-38.36957],[-12.95048,-38.36944],[-12.95046,-38.36931],[-12.95045,-38.36902],[-12.95046,-38.36888],[-12.95046,-38.36851],[-12.95047,-38.3682],[-12.95047,-38.3678],[-12.95045,-38.36749],[-12.95042,-38.36734],[-12.95036,-38.367],[-12.95022,-38.36627],[-12.95012,-38.36579],[-12.94998,-38.36513],[-12.94997,-38.36504],[-12.94996,-38.36485],[-12.94995,-38.36465],[-12.94996,-38.3646],[-12.94998,-38.36451],[-12.95009,-38.36412],[-12.95009,-38.36411],[-12.95027,-38.36358],[-12.95029,-38.3635],[-12.95032,-38.3634],[-12.95038,-38.36326],[-12.95047,-38.36305],[-12.95051,-38.36299],[-12.95053,-38.36294],[-12.95054,-38.36289],[-12.95054,-38.36287],[-12.95058,-38.36277],[-12.95063,-38.36269],[-12.95073,-38.36258],[-12.95079,-38.36254],[-12.9512,-38.3623],[-12.95127,-38.36225],[-12.95133,-38.36218],[-12.95163,-38.36183],[-12.95196,-38.36141],[-12.95202,-38.36132],[-12.95208,-38.36121],[-12.95222,-38.36085],[-12.95225,-38.36078],[-12.95229,-38.3607],[-12.95252,-38.36027],[-12.95262,-38.36011],[-12.95273,-38.35994],[-12.9529,-38.3597],[-12.95331,-38.35914],[-12.95351,-38.35888],[-12.95373,-38.35858],[-12.95404,-38.35793],[-12.95417,-38.35765],[-12.95435,-38.35726],[-12.95455,-38.35683],[-12.95462,-38.35667],[-12.95466,-38.35656],[-12.95495,-38.35609],[-12.95541,-38.35544],[-12.95569,-38.35504],[-12.95581,-38.35487],[-12.95593,-38.35471],[-12.95609,-38.35448],[-12.95615,-38.35437],[-12.95616,-38.35434],[-12.95618,-38.35428],[-12.95621,-38.3542],[-12.95622,-38.35411],[-12.95623,-38.354],[-12.95622,-38.35392],[-12.9562,-38.35383],[-12.95618,-38.35376],[-12.95614,-38.35366],[-12.95609,-38.35357],[-12.95604,-38.3535],[-12.956,-38.35344],[-12.95595,-38.35339],[-12.95583,-38.35325],[-12.95528,-38.3526],[-12.95479,-38.35202],[-12.95472,-38.352],[-12.95463,-38.35194],[-12.95456,-38.3519],[-12.95451,-38.35188],[-12.95447,-38.35187],[-12.9544,-38.35185],[-12.95432,-38.35185],[-12.95425,-38.35186],[-12.95417,-38.35188],[-12.95412,-38.3519],[-12.95394,-38.35197],[-12.95377,-38.35204],[-12.95368,-38.35208],[-12.95362,-38.35209],[-12.95354,-38.35209],[-12.95347,-38.35208],[-12.95339,-38.35205],[-12.95335,-38.35202],[-12.95331,-38.35199],[-12.95326,-38.35194],[-12.9531,-38.35172],[-12.95303,-38.35169],[-12.95298,-38.35168],[-12.95293,-38.35167],[-12.95289,-38.35167],[-12.95282,-38.35168],[-12.95239,-38.35184],[-12.95188,-38.35199],[-12.95169,-38.35204],[-12.95151,-38.35207],[-12.95128,-38.3521],[-12.95111,-38.35213],[-12.95096,-38.35215],[-12.95076,-38.3522],[-12.95061,-38.35223],[-12.95049,-38.35227],[-12.95031,-38.35233],[-12.95009,-38.35243],[-12.95001,-38.35222],[-12.94993,-38.35198],[-12.94986,-38.35171],[-12.94985,-38.35167],[-12.94986,-38.35161],[-12.94986,-38.35156],[-12.94985,-38.35152],[-12.94983,-38.35149],[-12.94976,-38.35139],[-12.94969,-38.35128]];
+  var estreito = window.innerWidth < 600;
+  var mapa = L.map('mapa', { scrollWheelZoom: false, zoomControl: true, attributionControl: true, zoomSnap: .25 });
+  mapa.fitBounds(L.latLng(CC).toBounds(6000).extend(L.latLng(HOTEL).toBounds(6000)), { padding: estreito ? [4, 4] : [14, 14] });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '&copy; OpenStreetMap' }).addTo(mapa);
+  var estilo = { radius: 3000, color: '#C6A15B', weight: 2.5, fillColor: '#081331', fillOpacity: .10 };
+  var c1 = L.circle(CC, estilo).addTo(mapa), c2 = L.circle(HOTEL, estilo).addTo(mapa);
+  L.polyline(ROTA, { color: '#081331', weight: 3, dashArray: '7 7', opacity: .85 }).addTo(mapa);
+  function pino(n) { return L.divIcon({ className: '', html: '<div class="pin"><b>' + n + '</b></div>', iconSize: [34, 34], iconAnchor: [17, 34] }); }
+  L.marker(CC, { icon: pino(1) }).addTo(mapa).bindTooltip(estreito ? 'Centro de Convenções' : 'Centro de Convenções Salvador', { permanent: true, direction: 'top', offset: [0, -36], className: 'rotulo-mapa' });
+  L.marker(HOTEL, { icon: pino(2) }).addTo(mapa).bindTooltip(estreito ? 'Deville Prime' : 'Hotel Deville Prime', { permanent: true, direction: 'top', offset: [0, -36], className: 'rotulo-mapa' });
+  var meio = ROTA[Math.floor(ROTA.length / 2)];
+  if (!estreito) L.tooltip({ permanent: true, direction: 'center', className: 'rotulo-mapa rotulo-dist' }).setLatLng(meio).setContent('10,9 km · 16 min de carro').addTo(mapa);
+  mapa.fitBounds(L.latLng(CC).toBounds(6000).extend(L.latLng(HOTEL).toBounds(6000)), { padding: estreito ? [4, 4] : [14, 14] });
+})();
+</script>
 <script>
 (function () {
   document.querySelectorAll('[data-carrossel]').forEach(function (feed) {
